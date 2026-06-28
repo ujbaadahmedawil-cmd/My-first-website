@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculator & Todo List</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:linear-gradient(135deg,#1e3a8a,#2563eb);
+    min-height:100vh;
+    padding:20px;
+}
+
+h1{
+    text-align:center;
+    color:white;
+    margin-bottom:20px;
+}
+
+.container{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:20px;
+}
+
+.card{
+    background:white;
+    width:350px;
+    padding:20px;
+    border-radius:20px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.2);
+}
+
+.card h2{
+    text-align:center;
+    margin-bottom:15px;
+}
+
+#display{
+    width:100%;
+    height:70px;
+    border:none;
+    background:#f3f4f6;
+    border-radius:15px;
+    text-align:right;
+    padding:15px;
+    font-size:28px;
+    margin-bottom:15px;
+}
+
+.buttons{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px;
+}
+
+.buttons button{
+    height:60px;
+    border:none;
+    border-radius:15px;
+    font-size:20px;
+    cursor:pointer;
+    background:#e5e7eb;
+}
+
+.buttons button:hover{
+    transform:scale(1.05);
+}
+
+.red{
+    background:#ef4444 !important;
+    color:white;
+}
+
+.green{
+    background:#22c55e !important;
+    color:white;
+}
+
+.zero{
+    grid-column:span 2;
+}
+
+.todo-box{
+    display:flex;
+    gap:10px;
+    margin-bottom:15px;
+}
+
+.todo-box input{
+    flex:1;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:10px;
+}
+
+.todo-box button{
+    background:#2563eb;
+    color:white;
+    border:none;
+    padding:12px;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+ul{
+    list-style:none;
+}
+
+li{
+    background:#f3f4f6;
+    padding:10px;
+    border-radius:10px;
+    margin-top:10px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.delete{
+    background:red;
+    color:white;
+    border:none;
+    padding:5px 10px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+@media(max-width:768px){
+    .card{
+        width:100%;
+    }
+}
+</style>
+</head>
+<body>
+
+<h1>Calculator & Todo List</h1>
+
+<div class="container">
+
+    <!-- Calculator -->
+    <div class="card">
+        <h2>Calculator</h2>
+
+        <input type="text" id="display" readonly>
+
+        <div class="buttons">
+            <button class="red" onclick="clearDisplay()">C</button>
+            <button onclick="append('/')">÷</button>
+            <button onclick="append('*')">×</button>
+            <button onclick="backspace()">⌫</button>
+
+            <button onclick="append('7')">7</button>
+            <button onclick="append('8')">8</button>
+            <button onclick="append('9')">9</button>
+            <button onclick="append('-')">−</button>
+
+            <button onclick="append('4')">4</button>
+            <button onclick="append('5')">5</button>
+            <button onclick="append('6')">6</button>
+            <button onclick="append('+')">+</button>
+
+            <button onclick="append('1')">1</button>
+            <button onclick="append('2')">2</button>
+            <button onclick="append('3')">3</button>
+            <button class="green" onclick="calculate()">=</button>
+
+            <button class="zero" onclick="append('0')">0</button>
+            <button onclick="append('.')">.</button>
+        </div>
+    </div>
+
+    <!-- Todo List -->
+    <div class="card">
+        <h2>Todo List</h2>
+
+        <div class="todo-box">
+            <input type="text" id="taskInput" placeholder="Enter task">
+            <button onclick="addTask()">Add</button>
+        </div>
+
+        <ul id="taskList"></ul>
+    </div>
+
+</div>
+
+<script>
+const display = document.getElementById("display");
+
+function append(value){
+    display.value += value;
+}
+
+function clearDisplay(){
+    display.value = "";
+}
+
+function backspace(){
+    display.value = display.value.slice(0,-1);
+}
+
+function calculate(){
+    try{
+        display.value = eval(display.value);
+    }catch{
+        display.value = "Error";
+    }
+}
+
+function addTask(){
+    const input = document.getElementById("taskInput");
+
+    if(input.value.trim() === "") return;
+
+    const li = document.createElement("li");
+
+    li.innerHTML =
+    input.value +
+    '<button class="delete" onclick="this.parentElement.remove()">X</button>';
+
+    document.getElementById("taskList").appendChild(li);
+
+    input.value = "";
+}
+</script>
+
+</body>
+</html>
